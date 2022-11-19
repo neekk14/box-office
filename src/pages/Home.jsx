@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import ActorGrid from '../components/actor/ActorGrid';
 import MainPageLayout from '../components/MainPageLayout';
+import ShowGrid from '../components/show/ShowGrid';
 import { apiGet } from '../misc/config';
 
 const Home = () => {
@@ -13,6 +15,7 @@ const Home = () => {
       setResults(result);
     });
   };
+
   const onInputChange = ev => {
     setInput(ev.target.value);
   };
@@ -25,19 +28,18 @@ const Home = () => {
   const onRadioChange = ev => {
     setSearchOption(ev.target.value);
   };
-  console.log(searchOption);
+
   const renderResults = () => {
     if (results && results.length === 0) {
       return <div>No Result</div>;
     }
+
     if (results && results.length > 0) {
-      return results[0].shows
-        ? results.map(item => {
-            return <div key={item.show.id}>{item.show.name}</div>;
-          })
-        : results.map(item => {
-            return <div key={item.person.id}>{item.person.name}</div>;
-          });
+      return results[0].show ? (
+        <ShowGrid data={results} />
+      ) : (
+        <ActorGrid data={results} />
+      );
     }
     return null;
   };
